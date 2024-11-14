@@ -1,0 +1,18 @@
+{
+	"files.associations": {
+		"cstdio": "c",
+		"libft.h": "c",
+		"stdbool.h": "c",
+		"stdio.h": "c",
+		"limits.h": "c",
+		"signal.h": "c",
+		"color.h": "c",
+		"termios.h": "c",
+		"types.h": "c",
+		"unistd.h": "c",
+		"stdlib.h": "c",
+		"philo.h": "c",
+		"pthread.h": "c",
+		"gc.h": "c"
+	}
+}
