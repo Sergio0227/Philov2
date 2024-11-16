@@ -6,7 +6,7 @@
 /*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:37:49 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/14 17:50:50 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/16 14:51:30 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static bool	valid_input(int argc, char **argv)
 	return (true);
 }
 
-static void grab_forks(t_philo *philo)
+static void	grab_forks(t_philo *philo)
 {
-	int nbr_of_philo;
+	int	nbr_of_philo;
 
 	nbr_of_philo = philo->data->nbr_of_philo;
 	if (philo->philo_id % 2 == 1)
@@ -107,7 +107,6 @@ static void	init_data(t_simulation *data, char **argv)
 	data->gc = NULL;
 	data->end_simulation = false;
 	data->all_threads_running = false;
-	data->nbr_of_running_threads = 0;
 	data->sim_start_time = 0;
 	i = -1;
 	data->forks = ft_malloc(&data->gc, sizeof(t_fork) * data->nbr_of_philo);

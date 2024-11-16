@@ -6,7 +6,7 @@
 /*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 20:06:57 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/14 19:28:11 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/16 13:51:16 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ struct						s_simulation
 	long					time_to_sleep;		//^4st argument
 	long					nbr_max_meals;		//?last argument (optional)
 	long					sim_start_time;
-	long					nbr_of_running_threads;
 	bool					end_simulation;
 	bool					all_threads_running;
 	pthread_t				monitor_thread;
