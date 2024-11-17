@@ -5,7 +5,6 @@ SRC =	src/main.c				\
 		src/time.c 				\
 		src/intro.c 			\
 		src/simulation.c 		\
-		src/monitor.c			\
 		src/safe_get_and_set.c 	
 
 

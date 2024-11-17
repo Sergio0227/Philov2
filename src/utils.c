@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sandre-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:08:35 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/16 14:51:50 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:21:17 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	write_status(t_philo_status status, t_philo *philo)
 	long	time;
 
 	pthread_mutex_lock(&philo->data->write_mtx);
-	time = gettime(1) - philo->data->sim_start_time -1;
+	time = gettime(1) - philo->data->sim_start_time - 1;
 	if (status == TAKES_LEFT_FORK)
 		printf("%ld %d has taken a fork\n", time, philo->philo_id);
 	else if (status == TAKES_RIGHT_FORK)
@@ -80,8 +80,10 @@ void	write_status_debug(t_philo_status status, t_philo *philo)
 {
 	long	time;
 
+	if (philo->is_philo_full)
+		return ;
 	pthread_mutex_lock(&philo->data->write_mtx);
-	time = gettime(1) - philo->data->sim_start_time -1;
+	time = gettime(1) - philo->data->sim_start_time - 1;
 	if (status == TAKES_LEFT_FORK)
 		printf("%ld %d has taken a fork ------ Fork: %d\n", time,
 			philo->philo_id, philo->left_fork->fork_id);

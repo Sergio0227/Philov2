@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sandre-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 20:06:57 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/16 13:51:16 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:41:54 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ struct						s_simulation
 	long					time_to_sleep;		//^4st argument
 	long					nbr_max_meals;		//?last argument (optional)
 	long					sim_start_time;
+	long					num_running_threads;
 	bool					end_simulation;
 	bool					all_threads_running;
 	pthread_t				monitor_thread;
@@ -81,7 +82,7 @@ void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *value);
 void	set_long(pthread_mutex_t *mutex, long *dest, long value);
 long	get_long(pthread_mutex_t *mutex, long *value);
-void	inc_long(pthread_mutex_t *mutex, long *dest);
+void	inc_dec_long (pthread_mutex_t *mutex, long *dest, char choice);
 long	gettime(int format);
 int		ft_usleep(size_t milliseconds);
 void	wait_all_threads(t_simulation *data);

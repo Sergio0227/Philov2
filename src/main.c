@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sandre-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:37:49 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/16 14:51:30 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:36:55 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	init_philos(t_simulation *data)
 		philo->is_philo_full = false;
 		philo->last_meal_time = 0;
 		philo->meal_count = 0;
+		pthread_mutex_init(&philo->philo_mtx, NULL);
 		grab_forks(philo);
 	}
 }
@@ -108,6 +109,7 @@ static void	init_data(t_simulation *data, char **argv)
 	data->end_simulation = false;
 	data->all_threads_running = false;
 	data->sim_start_time = 0;
+	data->num_running_threads = 0;
 	i = -1;
 	data->forks = ft_malloc(&data->gc, sizeof(t_fork) * data->nbr_of_philo);
 	while (++i < data->nbr_of_philo)

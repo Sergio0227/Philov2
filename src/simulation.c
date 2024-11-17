@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sandre-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:11:44 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/16 15:24:01 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:49:12 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ bool	simulation_ended(t_simulation *data)
 void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->left_fork->fork);
-	write_status_debug(TAKES_LEFT_FORK, philo);
+	write_status(TAKES_LEFT_FORK, philo);
 	pthread_mutex_lock(&philo->right_fork->fork);
-	write_status_debug(TAKES_RIGHT_FORK, philo);
+	write_status(TAKES_RIGHT_FORK, philo);
 	set_long(&philo->philo_mtx, &philo->last_meal_time, gettime(1));
-	inc_long(&philo->philo_mtx, &philo->meal_count);
-	write_status_debug(EATING, philo);
+	inc_dec_long(&philo->philo_mtx, &philo->meal_count, '+');
+	write_status(EATING, philo);
 	ft_usleep(philo->data->time_to_eat);
 	if (philo->data->nbr_max_meals > 0
 		&& philo->meal_count == philo->data->nbr_max_meals)
@@ -40,18 +40,22 @@ void	*start_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all_threads(philo->data);
+	inc_dec_long(&philo->data->table_mtx, &philo->data->num_running_threads,
+		'+');
 	set_long(&philo->philo_mtx, &philo->last_meal_time, gettime(1));
 	while (!simulation_ended(philo->data))
 	{
-		if (philo->is_philo_full)
-			return (NULL);
+		if (philo->is_philo_full || simulation_ended(philo->data))
+			break ;
 		eat(philo);
 		if (!simulation_ended(philo->data))
-			write_status_debug(SLEEPING, philo);
+			write_status(SLEEPING, philo);
 		ft_usleep(philo->data->time_to_sleep);
 		if (!simulation_ended(philo->data))
-			write_status_debug(THINKING, philo);
+			write_status(THINKING, philo);
 	}
+	inc_dec_long(&philo->data->table_mtx, &philo->data->num_running_threads,
+		'-');
 	return (NULL);
 }
 
@@ -62,7 +66,7 @@ void	*one_philo(void *arg)
 	philo = (t_philo *)arg;
 	(void)philo;
 	set_long(&philo->philo_mtx, &philo->last_meal_time, gettime(1));
-	write_status_debug(TAKES_LEFT_FORK, philo);
+	write_status(TAKES_LEFT_FORK, philo);
 	return (NULL);
 }
 
@@ -73,7 +77,8 @@ void	*monitor_threads(void *arg)
 	int				i;
 
 	data = (t_simulation *)arg;
-	while (!simulation_ended(data))
+	while (!simulation_ended(data) && get_long(&data->table_mtx,
+			&data->num_running_threads))
 	{
 		i = -1;
 		while (++i < data->nbr_of_philo && !simulation_ended(data))
@@ -81,10 +86,13 @@ void	*monitor_threads(void *arg)
 			time_since_last_meal = gettime(1)
 				- get_long(&data->philos->philo_mtx,
 					&data->philos[i].last_meal_time);
-			if (time_since_last_meal >= data->time_to_die)
+			if (time_since_last_meal >= data->time_to_die
+				&& !get_bool(&data->philos[i].philo_mtx,
+					&data->philos->is_philo_full))
 			{
+				if (!simulation_ended(data))
+					write_status(DIED, &data->philos[i]);
 				set_bool(&data->table_mtx, &data->end_simulation, true);
-				write_status(DIED, &data->philos[i]);
 			}
 		}
 	}

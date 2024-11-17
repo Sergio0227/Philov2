@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe_get_and_set.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandre-a <sandre-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sandre-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:48:05 by sandre-a          #+#    #+#             */
-/*   Updated: 2024/11/14 14:53:40 by sandre-a         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:42:37 by sandre-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ void	set_long(pthread_mutex_t *mutex, long *dest, long value)
 	pthread_mutex_unlock(mutex);
 }
 
-void	inc_long (pthread_mutex_t *mutex, long *dest)
+void	inc_dec_long(pthread_mutex_t *mutex, long *dest, char choice)
 {
 	pthread_mutex_lock(mutex);
-	(*dest)++;
+	if (choice == '+')
+		(*dest)++;
+	else
+		(*dest)--;
 	pthread_mutex_unlock(mutex);
 }
 
